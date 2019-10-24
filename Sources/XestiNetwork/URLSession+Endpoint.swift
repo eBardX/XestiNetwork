@@ -6,32 +6,6 @@ public extension URLSession {
 
     // MARK: Public Instance Methods
 
-    private func handleResult(for endpoint: Endpoint,
-                              data: Data?,
-                              response: URLResponse?,
-                              error: Error?,
-                              completion: @escaping (NetworkResult) -> Void) {
-        let result = makeResult(for: endpoint,
-                                data: data,
-                                response: response,
-                                error: error)
-
-        completion(result)
-    }
-
-    private func handleResult(for endpoint: Endpoint,
-                              location: URL?,
-                              response: URLResponse?,
-                              error: Error?,
-                              completion: @escaping (NetworkResult) -> Void) {
-        let result = makeResult(for: endpoint,
-                                location: location,
-                                response: response,
-                                error: error)
-
-        completion(result)
-    }
-
     func task(for endpoint: Endpoint,
               completion: @escaping (NetworkResult) -> Void) throws -> URLSessionTask {
         guard
@@ -100,6 +74,32 @@ public extension URLSession {
         }
 
         return nil
+    }
+
+    private func handleResult(for endpoint: Endpoint,
+                              data: Data?,
+                              response: URLResponse?,
+                              error: Error?,
+                              completion: @escaping (NetworkResult) -> Void) {
+        let result = makeResult(for: endpoint,
+                                data: data,
+                                response: response,
+                                error: error)
+
+        completion(result)
+    }
+
+    private func handleResult(for endpoint: Endpoint,
+                              location: URL?,
+                              response: URLResponse?,
+                              error: Error?,
+                              completion: @escaping (NetworkResult) -> Void) {
+        let result = makeResult(for: endpoint,
+                                location: location,
+                                response: response,
+                                error: error)
+
+        completion(result)
     }
 
     private func makeResult(for endpoint: Endpoint,
