@@ -35,7 +35,7 @@ public struct Endpoint {
     public let path: String
 
     public var acceptableContentTypes: Set<ContentType> = [.json]
-    public var acceptableStatusCodes: Range<Int> = 200..<300
+    public var acceptableStatusCodes: IndexSet = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: [HTTPHeaderName: Any]?
     public var method: HTTPMethod = .get
