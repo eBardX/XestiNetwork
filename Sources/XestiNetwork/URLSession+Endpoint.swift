@@ -9,27 +9,27 @@ public extension URLSession {
     func task(for endpoint: Endpoint,
               completion: @escaping (NetworkResult) -> Void) throws -> URLSessionTask {
         guard
-            var request = endpoint.makeRequest()
+            var request = endpoint.makeRequest(endpoint)
             else { throw NetworkError.invalidURLRequest }
 
         switch endpoint.task {
         case .data:
             return dataTask(with: request) { [weak self] in
-                self?.handleResult(for: endpoint,
-                                   data: $0,
-                                   response: $1,
-                                   error: $2,
-                                   completion: completion)
+                self?._handleResult(for: endpoint,
+                                    data: $0,
+                                    response: $1,
+                                    error: $2,
+                                    completion: completion)
             }
 
         case .downloadData,
              .downloadFile:
             return downloadTask(with: request) { [weak self] in
-                self?.handleResult(for: endpoint,
-                                   location: $0,
-                                   response: $1,
-                                   error: $2,
-                                   completion: completion)
+                self?._handleResult(for: endpoint,
+                                    location: $0,
+                                    response: $1,
+                                    error: $2,
+                                    completion: completion)
             }
 
         case let .uploadData(data):
@@ -37,29 +37,29 @@ public extension URLSession {
 
             return uploadTask(with: request,
                               from: data) { [weak self] in
-                                self?.handleResult(for: endpoint,
-                                                   data: $0,
-                                                   response: $1,
-                                                   error: $2,
-                                                   completion: completion)
+                                self?._handleResult(for: endpoint,
+                                                    data: $0,
+                                                    response: $1,
+                                                    error: $2,
+                                                    completion: completion)
             }
 
         case let .uploadFile(fileURL):
             return uploadTask(with: request,
                               fromFile: fileURL) { [weak self] in
-                                self?.handleResult(for: endpoint,
-                                                   data: $0,
-                                                   response: $1,
-                                                   error: $2,
-                                                   completion: completion)
+                                self?._handleResult(for: endpoint,
+                                                    data: $0,
+                                                    response: $1,
+                                                    error: $2,
+                                                    completion: completion)
             }
         }
     }
 
     // MARK: Private Instance Methods
 
-    private func checkValid(response: HTTPURLResponse,
-                            for endpoint: Endpoint) -> Error? {
+    private func _checkValid(response: HTTPURLResponse,
+                             for endpoint: Endpoint) -> Error? {
         let statusCode = response.statusCode
 
         if !endpoint.acceptableStatusCodes.contains(statusCode) {
@@ -76,36 +76,36 @@ public extension URLSession {
         return nil
     }
 
-    private func handleResult(for endpoint: Endpoint,
-                              data: Data?,
-                              response: URLResponse?,
-                              error: Error?,
-                              completion: @escaping (NetworkResult) -> Void) {
-        let result = makeResult(for: endpoint,
-                                data: data,
-                                response: response,
-                                error: error)
+    private func _handleResult(for endpoint: Endpoint,
+                               data: Data?,
+                               response: URLResponse?,
+                               error: Error?,
+                               completion: @escaping (NetworkResult) -> Void) {
+        let result = _makeResult(for: endpoint,
+                                 data: data,
+                                 response: response,
+                                 error: error)
 
         completion(result)
     }
 
-    private func handleResult(for endpoint: Endpoint,
-                              location: URL?,
-                              response: URLResponse?,
-                              error: Error?,
-                              completion: @escaping (NetworkResult) -> Void) {
-        let result = makeResult(for: endpoint,
-                                location: location,
-                                response: response,
-                                error: error)
+    private func _handleResult(for endpoint: Endpoint,
+                               location: URL?,
+                               response: URLResponse?,
+                               error: Error?,
+                               completion: @escaping (NetworkResult) -> Void) {
+        let result = _makeResult(for: endpoint,
+                                 location: location,
+                                 response: response,
+                                 error: error)
 
         completion(result)
     }
 
-    private func makeResult(for endpoint: Endpoint,
-                            data: Data?,
-                            response: URLResponse?,
-                            error: Error?) -> NetworkResult {
+    private func _makeResult(for endpoint: Endpoint,
+                             data: Data?,
+                             response: URLResponse?,
+                             error: Error?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
@@ -114,8 +114,8 @@ public extension URLSession {
             let response = response as? HTTPURLResponse
             else { return .failure(NetworkError.invalidHTTPURLResponse) }
 
-        if let error = checkValid(response: response,
-                                  for: endpoint) {
+        if let error = _checkValid(response: response,
+                                   for: endpoint) {
             return .failure(error)
         }
 
@@ -126,10 +126,10 @@ public extension URLSession {
         return .success(data, response)
     }
 
-    private func makeResult(for endpoint: Endpoint,
-                            location: URL?,
-                            response: URLResponse?,
-                            error: Error?) -> NetworkResult {
+    private func _makeResult(for endpoint: Endpoint,
+                             location: URL?,
+                             response: URLResponse?,
+                             error: Error?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
@@ -138,8 +138,8 @@ public extension URLSession {
             let response = response as? HTTPURLResponse
             else { return .failure(NetworkError.invalidHTTPURLResponse) }
 
-        if let error = checkValid(response: response,
-                                  for: endpoint) {
+        if let error = _checkValid(response: response,
+                                   for: endpoint) {
             return .failure(error)
         }
 
@@ -159,8 +159,8 @@ public extension URLSession {
             }
 
         case let .downloadFile(dstURL):
-            if let error = moveItem(at: srcURL,
-                                    to: dstURL) {
+            if let error = _moveItem(at: srcURL,
+                                     to: dstURL) {
                 return .failure(error)
             }
 
@@ -171,8 +171,8 @@ public extension URLSession {
         }
     }
 
-    private func moveItem(at srcURL: URL,
-                          to dstURL: URL) -> Error? {
+    private func _moveItem(at srcURL: URL,
+                           to dstURL: URL) -> Error? {
         let fm = FileManager.`default`
 
         do {

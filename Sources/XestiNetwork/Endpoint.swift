@@ -38,6 +38,10 @@ public struct Endpoint {
     public var acceptableStatusCodes: IndexSet = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: [HTTPHeaderName: Any]?
+    public var makeHeaderFields: (Endpoint) -> [String: String]? = _defaultMakeHeaderFields
+    public var makeQueryItems: (Endpoint) -> [URLQueryItem]? = _defaultMakeQueryItems
+    public var makeRequest: (Endpoint) -> URLRequest? = _defaultMakeRequest
+    public var makeURL: (Endpoint) -> URL? = _defaultMakeURL
     public var method: HTTPMethod = .get
     public var parameters: [ParameterName: Any]?
     public var task: HTTPTask = .data
@@ -45,13 +49,15 @@ public struct Endpoint {
     public var trace: Bool = false
 }
 
+// MARK: -
+
 public extension Endpoint {
 
     // MARK: Internal Instance Methods
 
-    internal func makeHeaderFields() -> [String: String]? {
+    private static func _defaultMakeHeaderFields(_ endpoint: Endpoint) -> [String: String]? {
         guard
-            let headers = headers
+            let headers = endpoint.headers
             else { return nil }
 
         var headerFields: [String: String] = [:]
@@ -63,9 +69,9 @@ public extension Endpoint {
         return headerFields
     }
 
-    internal func makeQueryItems() -> [URLQueryItem]? {
+    private static func _defaultMakeQueryItems(_ endpoint: Endpoint) -> [URLQueryItem]? {
         guard
-            let parameters = parameters
+            let parameters = endpoint.parameters
             else { return nil }
 
         var queryItems: [URLQueryItem] = []
@@ -78,29 +84,29 @@ public extension Endpoint {
         return queryItems
     }
 
-    internal func makeRequest() -> URLRequest? {
+    private static func _defaultMakeRequest(_ endpoint: Endpoint) -> URLRequest? {
         guard
-            let url = makeURL()
+            let url = endpoint.makeURL(endpoint)
             else { return nil }
 
         var request = URLRequest(url: url,
-                                 cachePolicy: cachePolicy,
-                                 timeoutInterval: timeoutInterval)
+                                 cachePolicy: endpoint.cachePolicy,
+                                 timeoutInterval: endpoint.timeoutInterval)
 
-        request.allHTTPHeaderFields = makeHeaderFields()
-        request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = endpoint.makeHeaderFields(endpoint)
+        request.httpMethod = endpoint.method.rawValue
 
         return request
     }
 
-    internal func makeURL() -> URL? {
+    private static func _defaultMakeURL(_ endpoint: Endpoint) -> URL? {
         guard
-            var components = URLComponents(url: baseURL,
+            var components = URLComponents(url: endpoint.baseURL,
                                            resolvingAgainstBaseURL: true)
             else { return nil }
 
-        components.path = (components.path as NSString).appendingPathComponent(path)
-        components.queryItems = makeQueryItems()
+        components.path = (components.path as NSString).appendingPathComponent(endpoint.path)
+        components.queryItems = endpoint.makeQueryItems(endpoint)
 
         return components.url
     }
