@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public struct ContentType: Equatable, Hashable, RawRepresentable {
 
@@ -19,6 +19,6 @@ public struct ContentType: Equatable, Hashable, RawRepresentable {
 
 extension ContentType: CustomStringConvertible {
     public var description: String {
-        return rawValue
+        rawValue
     }
 }

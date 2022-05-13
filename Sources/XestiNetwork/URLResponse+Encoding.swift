@@ -1,12 +1,11 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
 public extension URLResponse {
     var textEncoding: String.Encoding? {
-        guard
-            let name = textEncodingName
-            else { return nil }
+        guard let name = textEncodingName
+        else { return nil }
 
         let cfEnc = CFStringConvertIANACharSetNameToEncoding(name as CFString)
 

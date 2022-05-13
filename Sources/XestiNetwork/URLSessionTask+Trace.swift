@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -10,11 +10,10 @@ public extension URLSessionTask {
                prefix: String = "📤  ",
                includeThreadID: Bool = true,
                includeHeaders: Bool = true) {
-        guard
-            let request = originalRequest,
-            let method = request.httpMethod,
-            let urlString = request.url?.absoluteString
-            else { return }
+        guard let request = originalRequest,
+              let method = request.httpMethod,
+              let urlString = request.url?.absoluteString
+        else { return }
 
         var traceText = prefix
 
@@ -45,10 +44,10 @@ public extension URLSessionTask {
         }
 
         if method == HTTPMethod.post.rawValue,
-            let bodyData = request.httpBody,
-            !bodyData.isEmpty,
-            let bodyString = String(data: bodyData,
-                                    encoding: .utf8) {
+           let bodyData = request.httpBody,
+           !bodyData.isEmpty,
+           let bodyString = String(data: bodyData,
+                                   encoding: .utf8) {
             traceText.append(headerIncluded ? "\n\n" : "\n")
             traceText.append(bodyString)
         }
@@ -110,8 +109,8 @@ public extension URLSessionTask {
             }
 
             if !data.isEmpty,
-                let dataString = String(data: data,
-                                        encoding: response.textEncoding ?? .utf8) {
+               let dataString = String(data: data,
+                                       encoding: response.textEncoding ?? .utf8) {
                 traceText.append(headerIncluded ? "\n\n" : "\n")
                 traceText.append(dataString)
             }

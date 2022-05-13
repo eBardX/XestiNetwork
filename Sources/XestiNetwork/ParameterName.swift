@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public struct ParameterName: Equatable, Hashable, RawRepresentable {
 
@@ -21,6 +21,6 @@ public struct ParameterName: Equatable, Hashable, RawRepresentable {
 
 extension ParameterName: CustomStringConvertible {
     public var description: String {
-        return rawValue
+        rawValue
     }
 }

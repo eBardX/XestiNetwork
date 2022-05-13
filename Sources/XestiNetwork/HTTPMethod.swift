@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public enum HTTPMethod: String {
     case connect = "CONNECT"
@@ -16,6 +16,6 @@ public enum HTTPMethod: String {
 
 extension HTTPMethod: CustomStringConvertible {
     public var description: String {
-        return rawValue
+        rawValue
     }
 }

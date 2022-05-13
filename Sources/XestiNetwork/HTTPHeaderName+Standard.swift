@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public extension HTTPHeaderName {
     static let authorization = HTTPHeaderName("Authorization")

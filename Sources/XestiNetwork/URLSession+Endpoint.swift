@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -8,9 +8,8 @@ public extension URLSession {
 
     func task(for endpoint: Endpoint,
               completion: @escaping (NetworkResult) -> Void) throws -> URLSessionTask {
-        guard
-            var request = endpoint.makeRequest(endpoint)
-            else { throw NetworkError.invalidURLRequest }
+        guard var request = endpoint.makeRequest(endpoint)
+        else { throw NetworkError.invalidURLRequest }
 
         switch endpoint.task {
         case .data:
@@ -23,7 +22,7 @@ public extension URLSession {
             }
 
         case .downloadData,
-             .downloadFile:
+                .downloadFile:
             return downloadTask(with: request) { [weak self] in
                 self?._handleResult(for: endpoint,
                                     location: $0,
@@ -37,21 +36,21 @@ public extension URLSession {
 
             return uploadTask(with: request,
                               from: data) { [weak self] in
-                                self?._handleResult(for: endpoint,
-                                                    data: $0,
-                                                    response: $1,
-                                                    error: $2,
-                                                    completion: completion)
+                self?._handleResult(for: endpoint,
+                                    data: $0,
+                                    response: $1,
+                                    error: $2,
+                                    completion: completion)
             }
 
         case let .uploadFile(fileURL):
             return uploadTask(with: request,
                               fromFile: fileURL) { [weak self] in
-                                self?._handleResult(for: endpoint,
-                                                    data: $0,
-                                                    response: $1,
-                                                    error: $2,
-                                                    completion: completion)
+                self?._handleResult(for: endpoint,
+                                    data: $0,
+                                    response: $1,
+                                    error: $2,
+                                    completion: completion)
             }
         }
     }
@@ -69,7 +68,7 @@ public extension URLSession {
         }
 
         if let contentType = response.mimeType,
-            !endpoint.acceptableContentTypes.contains(ContentType(contentType)) {
+           !endpoint.acceptableContentTypes.contains(ContentType(contentType)) {
             return NetworkError.unacceptableContentType(contentType)
         }
 
@@ -110,18 +109,16 @@ public extension URLSession {
             return .failure(error)
         }
 
-        guard
-            let response = response as? HTTPURLResponse
-            else { return .failure(NetworkError.invalidHTTPURLResponse) }
+        guard let response = response as? HTTPURLResponse
+        else { return .failure(NetworkError.invalidHTTPURLResponse) }
 
         if let error = _checkValid(response: response,
                                    for: endpoint) {
             return .failure(error)
         }
 
-        guard
-            let data = data
-            else { return .failure(NetworkError.missingData) }
+        guard let data = data
+        else { return .failure(NetworkError.missingData) }
 
         return .success(data, response)
     }
@@ -134,18 +131,16 @@ public extension URLSession {
             return .failure(error)
         }
 
-        guard
-            let response = response as? HTTPURLResponse
-            else { return .failure(NetworkError.invalidHTTPURLResponse) }
+        guard let response = response as? HTTPURLResponse
+        else { return .failure(NetworkError.invalidHTTPURLResponse) }
 
         if let error = _checkValid(response: response,
                                    for: endpoint) {
             return .failure(error)
         }
 
-        guard
-            let srcURL = location
-            else { return .failure(NetworkError.missingLocation) }
+        guard let srcURL = location
+        else { return .failure(NetworkError.missingLocation) }
 
         switch endpoint.task {
         case .downloadData:
