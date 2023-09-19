@@ -36,10 +36,10 @@ public struct Endpoint {
     public var acceptableStatusCodes = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: [HTTPHeaderName: Any]?
-    public var makeHeaderFields: (Endpoint) -> [String: String]? = _defaultMakeHeaderFields
-    public var makeQueryItems: (Endpoint) -> [URLQueryItem]? = _defaultMakeQueryItems
-    public var makeRequest: (Endpoint) -> URLRequest? = _defaultMakeRequest
-    public var makeURL: (Endpoint) -> URL? = _defaultMakeURL
+    public var makeHeaderFields: (Self) -> [String: String]? = _defaultMakeHeaderFields
+    public var makeQueryItems: (Self) -> [URLQueryItem]? = _defaultMakeQueryItems
+    public var makeRequest: (Self) -> URLRequest? = _defaultMakeRequest
+    public var makeURL: (Self) -> URL? = _defaultMakeURL
     public var method: HTTPMethod = .get
     public var parameters: [ParameterName: Any]?
     public var task: HTTPTask = .data

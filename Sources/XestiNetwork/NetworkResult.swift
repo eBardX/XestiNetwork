@@ -3,6 +3,6 @@
 import Foundation
 
 public enum NetworkResult {
-    case failure(Error)
+    case failure(any Error)
     case success(Data, HTTPURLResponse)
 }

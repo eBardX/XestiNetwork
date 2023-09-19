@@ -58,7 +58,7 @@ public extension URLSession {
     // MARK: Private Instance Methods
 
     private func _checkValid(response: HTTPURLResponse,
-                             for endpoint: Endpoint) -> Error? {
+                             for endpoint: Endpoint) -> (any Error)? {
         let statusCode = response.statusCode
 
         if !endpoint.acceptableStatusCodes.contains(statusCode) {
@@ -78,7 +78,7 @@ public extension URLSession {
     private func _handleResult(for endpoint: Endpoint,
                                data: Data?,
                                response: URLResponse?,
-                               error: Error?,
+                               error: (any Error)?,
                                completion: @escaping (NetworkResult) -> Void) {
         let result = _makeResult(for: endpoint,
                                  data: data,
@@ -91,7 +91,7 @@ public extension URLSession {
     private func _handleResult(for endpoint: Endpoint,
                                location: URL?,
                                response: URLResponse?,
-                               error: Error?,
+                               error: (any Error)?,
                                completion: @escaping (NetworkResult) -> Void) {
         let result = _makeResult(for: endpoint,
                                  location: location,
@@ -104,7 +104,7 @@ public extension URLSession {
     private func _makeResult(for endpoint: Endpoint,
                              data: Data?,
                              response: URLResponse?,
-                             error: Error?) -> NetworkResult {
+                             error: (any Error)?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
@@ -126,7 +126,7 @@ public extension URLSession {
     private func _makeResult(for endpoint: Endpoint,
                              location: URL?,
                              response: URLResponse?,
-                             error: Error?) -> NetworkResult {
+                             error: (any Error)?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
@@ -167,7 +167,7 @@ public extension URLSession {
     }
 
     private func _moveItem(at srcURL: URL,
-                           to dstURL: URL) -> Error? {
+                           to dstURL: URL) -> (any Error)? {
         let fm = FileManager.`default`
 
         do {
