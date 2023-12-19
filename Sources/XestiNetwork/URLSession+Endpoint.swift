@@ -78,7 +78,7 @@ public extension URLSession {
     private func _handleResult(for endpoint: Endpoint,
                                data: Data?,
                                response: URLResponse?,
-                               error: (any Error)?,
+                               error: (some Error)?,
                                completion: @escaping (NetworkResult) -> Void) {
         let result = _makeResult(for: endpoint,
                                  data: data,
@@ -91,7 +91,7 @@ public extension URLSession {
     private func _handleResult(for endpoint: Endpoint,
                                location: URL?,
                                response: URLResponse?,
-                               error: (any Error)?,
+                               error: (some Error)?,
                                completion: @escaping (NetworkResult) -> Void) {
         let result = _makeResult(for: endpoint,
                                  location: location,
@@ -104,7 +104,7 @@ public extension URLSession {
     private func _makeResult(for endpoint: Endpoint,
                              data: Data?,
                              response: URLResponse?,
-                             error: (any Error)?) -> NetworkResult {
+                             error: (some Error)?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
@@ -126,7 +126,7 @@ public extension URLSession {
     private func _makeResult(for endpoint: Endpoint,
                              location: URL?,
                              response: URLResponse?,
-                             error: (any Error)?) -> NetworkResult {
+                             error: (some Error)?) -> NetworkResult {
         if let error = error {
             return .failure(error)
         }
