@@ -51,7 +51,7 @@ public struct Endpoint {
 
 extension Endpoint {
 
-    // MARK: Internal Instance Methods
+    // MARK: Private Type Methods
 
     private static func _defaultMakeHeaderFields(_ endpoint: Endpoint) -> [String: String]? {
         guard let headers = endpoint.headers
