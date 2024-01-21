@@ -1,26 +1,19 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public struct ParameterName: Equatable, Hashable, RawRepresentable {
+import XestiTools
+
+public struct ParameterName: StringRepresentable {
 
     // MARK: Public Initializers
 
-    public init(_ rawValue: String) {
-        self.rawValue = rawValue
-    }
+    public init(_ stringValue: String) {
+        precondition(Self.isValid(stringValue),
+                     Self.invalidMessage)
 
-    public init(rawValue: String) {
-        self.rawValue = rawValue
+        self.stringValue = stringValue
     }
 
     // MARK: Public Instance Properties
 
-    public var rawValue: String
-}
-
-// MARK: - CustomStringConvertible
-
-extension ParameterName: CustomStringConvertible {
-    public var description: String {
-        rawValue
-    }
+    public let stringValue: String
 }

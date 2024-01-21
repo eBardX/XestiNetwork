@@ -1,9 +1,9 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
-public extension URLResponse {
-    var textEncoding: String.Encoding? {
+extension URLResponse {
+    public var textEncoding: String.Encoding? {
         guard let name = textEncodingName
         else { return nil }
 

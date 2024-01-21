@@ -1,13 +1,13 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
-public extension URLSession {
+extension URLSession {
 
     // MARK: Public Instance Methods
 
-    func task(for endpoint: Endpoint,
-              completion: @escaping (NetworkResult) -> Void) throws -> URLSessionTask {
+    public func task(for endpoint: Endpoint,
+                     completion: @escaping (NetworkResult) -> Void) throws -> URLSessionTask {
         guard var request = endpoint.makeRequest(endpoint)
         else { throw NetworkError.invalidURLRequest }
 
@@ -117,7 +117,7 @@ public extension URLSession {
             return .failure(error)
         }
 
-        guard let data = data
+        guard let data
         else { return .failure(NetworkError.missingData) }
 
         return .success(data, response)
@@ -127,7 +127,7 @@ public extension URLSession {
                              location: URL?,
                              response: URLResponse?,
                              error: (some Error)?) -> NetworkResult {
-        if let error = error {
+        if let error {
             return .failure(error)
         }
 

@@ -1,21 +1,19 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public enum HTTPMethod: String {
-    case connect = "CONNECT"
-    case delete  = "DELETE"
-    case get     = "GET"
-    case head    = "HEAD"
-    case options = "OPTIONS"
-    case patch   = "PATCH"
-    case post    = "POST"
-    case put     = "PUT"
-    case trace   = "TRACE"
-}
+import XestiTools
 
-// MARK: - CustomStringConvertible
+public struct HTTPMethod: StringRepresentable {
 
-extension HTTPMethod: CustomStringConvertible {
-    public var description: String {
-        rawValue
+    // MARK: Public Initializers
+
+    public init(_ stringValue: String) {
+        precondition(Self.isValid(stringValue),
+                     Self.invalidMessage)
+
+        self.stringValue = stringValue
     }
+
+    // MARK: Public Instance Properties
+
+    public let stringValue: String
 }

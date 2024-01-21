@@ -1,15 +1,15 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
-public extension URLSessionTask {
+extension URLSessionTask {
 
     // MARK: Public Instance Methods
 
-    func trace(with writer: (String) -> Void,
-               prefix: String = "📤  ",
-               includeThreadID: Bool = true,
-               includeHeaders: Bool = true) {
+    public func trace(with writer: (String) -> Void,
+                      prefix: String = "📤  ",
+                      includeThreadID: Bool = true,
+                      includeHeaders: Bool = true) {
         guard let request = originalRequest,
               let method = request.httpMethod,
               let urlString = request.url?.absoluteString
@@ -33,17 +33,17 @@ public extension URLSessionTask {
         var headerIncluded = false
 
         if includeHeaders {
-            request.allHTTPHeaderFields?.forEach {
+            for field in request.allHTTPHeaderFields ?? [:] {
                 traceText.append("\n")
-                traceText.append($0.key)
+                traceText.append(field.key)
                 traceText.append(": ")
-                traceText.append($0.value)
+                traceText.append(field.value)
 
                 headerIncluded = true
             }
         }
 
-        if method == HTTPMethod.post.rawValue,
+        if method == HTTPMethod.post.stringValue,
            let bodyData = request.httpBody,
            !bodyData.isEmpty,
            let bodyString = String(data: bodyData,
@@ -55,11 +55,11 @@ public extension URLSessionTask {
         writer(traceText)
     }
 
-    func trace(with writer: (String) -> Void,
-               result: NetworkResult,
-               prefix: String = "📥  ",
-               includeThreadID: Bool = true,
-               includeHeaders: Bool = true) {
+    public func trace(with writer: (String) -> Void,
+                      result: NetworkResult,
+                      prefix: String = "📥  ",
+                      includeThreadID: Bool = true,
+                      includeHeaders: Bool = true) {
         var traceText = prefix
 
         switch result {
@@ -98,11 +98,11 @@ public extension URLSessionTask {
             var headerIncluded = false
 
             if includeHeaders {
-                response.allHeaderFields.forEach {
+                for field in response.allHeaderFields {
                     traceText.append("\n")
-                    traceText.append(String(describing: $0.key))
+                    traceText.append(String(describing: field.key))
                     traceText.append(": ")
-                    traceText.append(String(describing: $0.value))
+                    traceText.append(String(describing: field.value))
 
                     headerIncluded = true
                 }

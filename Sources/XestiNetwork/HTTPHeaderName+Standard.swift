@@ -1,7 +1,7 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension HTTPHeaderName {
-    static let authorization = HTTPHeaderName("Authorization")
-    static let contentType = HTTPHeaderName("Content-Type")
-    static let userAgent = HTTPHeaderName("User-Agent")
+extension HTTPHeaderName {
+    public static let authorization = HTTPHeaderName("Authorization")
+    public static let contentType   = HTTPHeaderName("Content-Type")
+    public static let userAgent     = HTTPHeaderName("User-Agent")
 }
