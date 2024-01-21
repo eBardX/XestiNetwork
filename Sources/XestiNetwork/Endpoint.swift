@@ -44,7 +44,6 @@ public struct Endpoint {
     public var parameters: [ParameterName: Any]?
     public var task: HTTPTask = .data
     public var timeoutInterval: TimeInterval = 60
-    public var trace = false
 }
 
 // MARK: -
