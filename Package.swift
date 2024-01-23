@@ -11,12 +11,12 @@ let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiter
                                      .enableUpcomingFeature("ImplicitOpenExistentials")]
 
 let package = Package(name: "XestiNetwork",
-                      platforms: [.iOS(.v16),
-                                  .macOS(.v12)],
+                      platforms: [.iOS(.v17),
+                                  .macOS(.v13)],
                       products: [.library(name: "XestiNetwork",
                                           targets: ["XestiNetwork"])],
                       dependencies: [.package(url: "https://github.com/eBardX/XestiTools.git",
-                                              from: "2.1.0")],
+                                              from: "2.0.0")],
                       targets: [.target(name: "XestiNetwork",
                                         dependencies: [.product(name: "XestiTools",
                                                                 package: "XestiTools")],
