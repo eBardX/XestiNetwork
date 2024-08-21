@@ -1,4 +1,4 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -36,22 +36,20 @@ public struct Endpoint {
     public var acceptableStatusCodes = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: [HTTPHeaderName: Any]?
-    public var makeHeaderFields: (Self) -> [String: String]? = _defaultMakeHeaderFields
-    public var makeQueryItems: (Self) -> [URLQueryItem]? = _defaultMakeQueryItems
-    public var makeRequest: (Self) -> URLRequest? = _defaultMakeRequest
-    public var makeURL: (Self) -> URL? = _defaultMakeURL
+    public var makeHeaderFields: (Self) -> [String: String]? = Self._defaultMakeHeaderFields
+    public var makeQueryItems: (Self) -> [URLQueryItem]? = Self._defaultMakeQueryItems
+    public var makeRequest: (Self) -> URLRequest? = Self._defaultMakeRequest
+    public var makeURL: (Self) -> URL? = Self._defaultMakeURL
     public var method: HTTPMethod = .get
     public var parameters: [ParameterName: Any]?
-    public var task: HTTPTask = .data
     public var timeoutInterval: TimeInterval = 60
-    public var trace = false
 }
 
 // MARK: -
 
-public extension Endpoint {
+extension Endpoint {
 
-    // MARK: Internal Instance Methods
+    // MARK: Private Type Methods
 
     private static func _defaultMakeHeaderFields(_ endpoint: Endpoint) -> [String: String]? {
         guard let headers = endpoint.headers
@@ -60,7 +58,7 @@ public extension Endpoint {
         var headerFields: [String: String] = [:]
 
         for (name, value) in headers {
-            headerFields[name.rawValue] = String(describing: value)
+            headerFields[name.stringValue] = String(describing: value)
         }
 
         return headerFields
@@ -73,7 +71,7 @@ public extension Endpoint {
         var queryItems: [URLQueryItem] = []
 
         for (name, value) in parameters {
-            queryItems.append(URLQueryItem(name: name.rawValue,
+            queryItems.append(URLQueryItem(name: name.stringValue,
                                            value: String(describing: value)))
         }
 
@@ -89,7 +87,7 @@ public extension Endpoint {
                                  timeoutInterval: endpoint.timeoutInterval)
 
         request.allHTTPHeaderFields = endpoint.makeHeaderFields(endpoint)
-        request.httpMethod = endpoint.method.rawValue
+        request.httpMethod = endpoint.method.stringValue
 
         return request
     }

@@ -1,7 +1,7 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension ContentType {
-    static let binary = ContentType("application/octet-stream")
-    static let json = ContentType("application/json")
-    static let plainText = ContentType("text/plain")
+extension ContentType {
+    public static let binary    = ContentType("application/octet-stream")
+    public static let json      = ContentType("application/json")
+    public static let plainText = ContentType("text/plain")
 }
