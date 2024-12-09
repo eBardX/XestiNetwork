@@ -4,6 +4,13 @@ import Foundation
 
 public struct Endpoint {
 
+    // MARK: Public Nested Types
+
+    public enum DataSource {
+        case bodyData(Data)
+        case fileURL(URL)
+    }
+
     // MARK: Public Initializers
 
     public init(baseURL: URL,
@@ -35,6 +42,7 @@ public struct Endpoint {
     public var acceptableContentTypes: Set<ContentType> = [.json]
     public var acceptableStatusCodes = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+    public var dataSource: DataSource?
     public var headers: [HTTPHeaderName: Any]?
     public var makeHeaderFields: (Self) -> [String: String]? = Self._defaultMakeHeaderFields
     public var makeQueryItems: (Self) -> [URLQueryItem]? = Self._defaultMakeQueryItems

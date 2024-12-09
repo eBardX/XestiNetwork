@@ -34,22 +34,24 @@ extension URLSession {
     }
 
     public func upload(for endpoint: Endpoint,
-                       from bodyData: Data,
                        delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
-        let (data, response) = try await upload(for: _makeRequest(for: endpoint),
+        guard let dataSource = endpoint.dataSource
+        else { throw NetworkError.missingDataSource }
+
+        let response: URLResponse
+        let data: Data
+
+        switch dataSource {
+        case let .bodyData(bodyData):
+            (data, response) = try await upload(for: _makeRequest(for: endpoint),
                                                 from: bodyData,
                                                 delegate: delegate)
 
-        return (data, try _checkValidResponse(response,
-                                              for: endpoint))
-    }
-
-    public func upload(for endpoint: Endpoint,
-                       fromFile fileURL: URL,
-                       delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
-        let (data, response) = try await upload(for: _makeRequest(for: endpoint),
+        case let .fileURL(fileURL):
+            (data, response) = try await upload(for: _makeRequest(for: endpoint),
                                                 fromFile: fileURL,
                                                 delegate: delegate)
+        }
 
         return (data, try _checkValidResponse(response,
                                               for: endpoint))

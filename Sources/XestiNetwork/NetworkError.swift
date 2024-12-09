@@ -3,6 +3,7 @@
 public enum NetworkError: Error {
     case invalidHTTPURLResponse
     case invalidURLRequest
+    case missingDataSource
     case unacceptableContentType(String)
     case unacceptableStatusCode(Int, String)
 }
