@@ -1,4 +1,4 @@
-// swift-tools-version:5.10
+// swift-tools-version:5.11
 
 // © 2018–2024 John Gary Pusey (see LICENSE.md)
 
@@ -11,7 +11,7 @@ let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiter
                                      .enableUpcomingFeature("ImplicitOpenExistentials")]
 
 let package = Package(name: "XestiNetwork",
-                      platforms: [.iOS(.v17),
+                      platforms: [.iOS(.v15),
                                   .macOS(.v13)],
                       products: [.library(name: "XestiNetwork",
                                           targets: ["XestiNetwork"])],
