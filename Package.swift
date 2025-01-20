@@ -1,14 +1,8 @@
-// swift-tools-version:5.11
+// swift-tools-version:6.0
 
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
-
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
 
 let package = Package(name: "XestiNetwork",
                       platforms: [.iOS(.v15),
@@ -16,9 +10,8 @@ let package = Package(name: "XestiNetwork",
                       products: [.library(name: "XestiNetwork",
                                           targets: ["XestiNetwork"])],
                       dependencies: [.package(url: "https://github.com/eBardX/XestiTools.git",
-                                              from: "3.0.0")],
+                                              branch: "swift-6-support")],
                       targets: [.target(name: "XestiNetwork",
                                         dependencies: [.product(name: "XestiTools",
-                                                                package: "XestiTools")],
-                                        swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+                                                                package: "XestiTools")])],
+                      swiftLanguageModes: [.version("6")])
