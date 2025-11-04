@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.2
 
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
@@ -10,17 +10,14 @@ let package = Package(name: "XestiNetwork",
                       products: [.library(name: "XestiNetwork",
                                           targets: ["XestiNetwork"])],
                       dependencies: [.package(url: "https://github.com/eBardX/XestiTools.git",
-                                              .upToNextMajor(from: "5.0.0"))],
+                                              .upToNextMajor(from: "6.0.0"))],
                       targets: [.target(name: "XestiNetwork",
                                         dependencies: [.product(name: "XestiTools",
                                                                 package: "XestiTools")])],
-                      swiftLanguageVersions: [.v5])
+                      swiftLanguageModes: [.v6])
 
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
+let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
+                                     .enableUpcomingFeature("ExistentialAny")]
 
 for target in package.targets {
     var settings = target.swiftSettings ?? []

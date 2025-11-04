@@ -1,15 +1,8 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
 public struct Endpoint {
-
-    // MARK: Public Nested Types
-
-    public enum DataSource {
-        case bodyData(Data)
-        case fileURL(URL)
-    }
 
     // MARK: Public Initializers
 
@@ -43,13 +36,13 @@ public struct Endpoint {
     public var acceptableStatusCodes = IndexSet(200..<300)
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var dataSource: DataSource?
-    public var headers: [HTTPHeaderName: Any]?
-    public var makeHeaderFields: (Self) -> [String: String]? = Self._defaultMakeHeaderFields
-    public var makeQueryItems: (Self) -> [URLQueryItem]? = Self._defaultMakeQueryItems
-    public var makeRequest: (Self) -> URLRequest? = Self._defaultMakeRequest
-    public var makeURL: (Self) -> URL? = Self._defaultMakeURL
+    public var headers: [HTTPHeaderName: any Sendable]?
+    public var makeHeaderFields: @Sendable (Self) -> [String: String]? = Self._defaultMakeHeaderFields
+    public var makeQueryItems: @Sendable (Self) -> [URLQueryItem]? = Self._defaultMakeQueryItems
+    public var makeRequest: @Sendable (Self) -> URLRequest? = Self._defaultMakeRequest
+    public var makeURL: @Sendable (Self) -> URL? = Self._defaultMakeURL
     public var method: HTTPMethod = .get
-    public var parameters: [ParameterName: Any]?
+    public var parameters: [ParameterName: any Sendable]?
     public var timeoutInterval: TimeInterval = 60
 }
 
@@ -110,4 +103,9 @@ extension Endpoint {
 
         return components.url
     }
+}
+
+// MARK: - Sendable
+
+extension Endpoint: Sendable {
 }

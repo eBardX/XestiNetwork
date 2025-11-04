@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 public enum NetworkError: Error {
     case invalidHTTPURLResponse
@@ -6,4 +6,9 @@ public enum NetworkError: Error {
     case missingDataSource
     case unacceptableContentType(String)
     case unacceptableStatusCode(Int, String)
+}
+
+// MARK: - Sendable
+
+extension NetworkError: Sendable {
 }
