@@ -2,10 +2,34 @@
 
 import Foundation
 
+/// Extensions allowing `URLSession` to seemlessly use ``Endpoint`` instances.
 extension URLSession {
 
     // MARK: Public Instance Methods
 
+    /// Retrieves the contents of a URL described in the provided endpoint and
+    /// delivers an asynchronous sequence of bytes.
+    ///
+    /// Use this method when you want to process the bytes while the transfer is
+    /// underway. You can use a `for-await-in` loop to handle each byte. For
+    /// textual data, use the `URLSession.AsyncBytes` properties `characters`,
+    /// `unicodeScalars`, or `lines` to receive the content
+    /// as asynchronous sequences of those types.
+    ///
+    /// To wait until the session finishes transferring data and receive it in a
+    /// single `Data` instance, use ``data(for:delegate:)``.
+    ///
+    /// - Parameter endpoint:   An ``Endpoint`` instance that describes
+    ///                         request-specific information such as the URL,
+    ///                         cache policy, request type, and body data or
+    ///                         body stream.
+    /// - Parameter delegate:   A delegate that receives life cycle and
+    ///                         authentication challenge callbacks as the
+    ///                         transfer progresses.
+    ///
+    /// - Returns:  An asynchronously-delivered tuple that contains a
+    ///             `URLSession.AsyncBytes` sequence to iterate over, and an
+    ///             `HTTPURLResponse`.
     public func bytes(for endpoint: Endpoint,
                       delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
         let (bytes, response) = try await bytes(for: _makeRequest(for: endpoint),
@@ -15,6 +39,23 @@ extension URLSession {
                                                for: endpoint))
     }
 
+    /// Downloads the contents of a URL described in the provided endpoint and
+    /// delivers the data asynchronously.
+    ///
+    /// Use this method to wait until the session finishes transferring data and
+    /// receive it in a single `Data` instance. To process the bytes as the
+    /// session receives them, use ``bytes(for:delegate:)``.
+    ///
+    /// - Parameter endpoint:   An ``Endpoint`` instance that describes
+    ///                         request-specific information such as the URL,
+    ///                         cache policy, request type, and body data or
+    ///                         body stream.
+    /// - Parameter delegate:   A delegate that receives life cycle and
+    ///                         authentication challenge callbacks as the
+    ///                         transfer progresses.
+    ///
+    /// - Returns:  An asynchronously-delivered tuple that contains the URL
+    ///             contents as a `Data` instance, and an `HTTPURLResponse`.
     public func data(for endpoint: Endpoint,
                      delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
         let (data, response) = try await data(for: _makeRequest(for: endpoint),
@@ -24,6 +65,19 @@ extension URLSession {
                                               for: endpoint))
     }
 
+    /// Retrieves the contents of a URL described in the provided endpoint and
+    /// delivers the URL of the saved file asynchronously.
+    ///
+    /// - Parameter endpoint:   An ``Endpoint`` instance that describes
+    ///                         request-specific information such as the URL,
+    ///                         cache policy, request type, and body data or
+    ///                         body stream.
+    /// - Parameter delegate:   A delegate that receives life cycle and
+    ///                         authentication challenge callbacks as the
+    ///                         transfer progresses.
+    ///
+    /// - Returns:  An asynchronously-delivered tuple that contains the location
+    ///             of the downloaded file as a URL, and an `HTTPURLResponse`.
     public func download(for endpoint: Endpoint,
                          delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (URL, HTTPURLResponse) {
         let (location, response) = try await download(for: _makeRequest(for: endpoint),
@@ -33,6 +87,20 @@ extension URLSession {
                                                   for: endpoint))
     }
 
+    /// Uploads data to a URL described in the provided endpoint and delivers
+    /// the result asynchronously.
+    ///
+    /// - Parameter endpoint:   An ``Endpoint`` instance that describes
+    ///                         request-specific information such as the URL,
+    ///                         cache policy, request type, and body data or
+    ///                         body stream.
+    /// - Parameter delegate:   A delegate that receives life cycle and
+    ///                         authentication challenge callbacks as the
+    ///                         transfer progresses.
+    ///
+    /// - Returns:  An asynchronously-delivered tuple that contains any data
+    ///             returned by the server as a `Data` instance, and an
+    ///             `HTTPURLResponse`.
     public func upload(for endpoint: Endpoint,
                        delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
         guard let dataSource = endpoint.dataSource
