@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 import XestiTools
 
@@ -7,10 +7,7 @@ public struct HTTPHeaderName: StringRepresentable {
     // MARK: Public Initializers
 
     public init(_ stringValue: String) {
-        precondition(Self.isValid(stringValue),
-                     Self.invalidMessage)
-
-        self.stringValue = stringValue
+        self.stringValue = Self.requireValid(stringValue)
     }
 
     // MARK: Public Instance Properties

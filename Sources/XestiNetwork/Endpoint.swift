@@ -1,4 +1,4 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -56,27 +56,19 @@ extension Endpoint {
         guard let headers = endpoint.headers
         else { return nil }
 
-        var headerFields: [String: String] = [:]
-
-        for (name, value) in headers {
-            headerFields[name.stringValue] = String(describing: value)
-        }
-
-        return headerFields
+        return Dictionary(uniqueKeysWithValues: headers.map {
+            ($0.key.stringValue, String(describing: $0.value))
+        })
     }
 
     private static func _defaultMakeQueryItems(_ endpoint: Endpoint) -> [URLQueryItem]? {
         guard let parameters = endpoint.parameters
         else { return nil }
 
-        var queryItems: [URLQueryItem] = []
-
-        for (name, value) in parameters {
-            queryItems.append(URLQueryItem(name: name.stringValue,
-                                           value: String(describing: value)))
+        return parameters.map {
+            URLQueryItem(name: $0.key.stringValue,
+                         value: String(describing: $0.value))
         }
-
-        return queryItems
     }
 
     private static func _defaultMakeRequest(_ endpoint: Endpoint) -> URLRequest? {
