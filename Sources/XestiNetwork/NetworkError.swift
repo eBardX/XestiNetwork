@@ -1,8 +1,10 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+import XestiTools
+
 /// An error that occurs while constructing an HTTP request or while
 /// validating an HTTP response.
-public enum NetworkError: Error {
+public enum NetworkError {
     /// A `URLResponse` instance could not be downcast to `HTTPURLResponse`.
     case invalidHTTPURLResponse
 
@@ -24,6 +26,29 @@ public enum NetworkError: Error {
     /// As associated values, this case contains the unacceptable status code
     /// both as an integer value and as a localized string value.
     case unacceptableStatusCode(Int, String)
+}
+
+// MARK: - EnhancedError
+
+extension NetworkError: EnhancedError {
+    public var message: String {
+        switch self {
+        case .invalidHTTPURLResponse:
+            "Invalid HTTP URL response"
+
+        case .invalidURLRequest:
+            "Invalid URL request"
+
+        case .missingDataSource:
+            "Missing data source"
+
+        case let .unacceptableContentType(contentType):
+            "Unacceptable content type: \(contentType)"
+
+        case let .unacceptableStatusCode(statusCode, text):
+            "Unacceptable status code: \(text) (\(statusCode))"
+        }
+    }
 }
 
 // MARK: - Sendable
