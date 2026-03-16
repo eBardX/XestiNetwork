@@ -10,13 +10,15 @@ public struct HTTPHeaderName: StringRepresentable {
     /// Creates a new HTTP header field name instance with the provided string
     /// value.
     ///
-    /// If the provided string value is empty, this initializer stops program
-    /// execution.
+    /// If the provided string value is empty, this initializer returns `nil`.
     ///
     /// - Parameter stringValue:	The string value to use for the new HTTP
     /// 							header field name instance.
-    public init(_ stringValue: String) {
-        self.stringValue = Self.requireValid(stringValue)
+    public init?(stringValue: String) {
+        guard Self.isValid(stringValue)
+        else { return nil }
+
+        self.stringValue = stringValue
     }
 
     // MARK: Public Instance Properties
