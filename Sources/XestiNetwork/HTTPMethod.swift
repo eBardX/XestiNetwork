@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import XestiTools
+public import XestiTools
 
 /// A type-safe HTTP request method.
 public struct HTTPMethod: StringRepresentable {

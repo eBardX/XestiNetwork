@@ -1,6 +1,8 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
+public import Foundation
+
+private import XestiTools
 
 /// Extensions allowing `URLSession` to seemlessly use ``Endpoint`` instances.
 extension URLSession {

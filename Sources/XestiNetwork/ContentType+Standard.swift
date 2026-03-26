@@ -1,5 +1,7 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+private import XestiTools
+
 extension ContentType {
     /// Indicates arbitrary binary data.
     public static let binary = ContentType("application/octet-stream")

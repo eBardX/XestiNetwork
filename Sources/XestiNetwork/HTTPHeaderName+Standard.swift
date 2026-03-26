@@ -1,5 +1,7 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+private import XestiTools
+
 extension HTTPHeaderName {
     /// Authentication credentials for HTTP authentication.
     public static let authorization = HTTPHeaderName("Authorization")

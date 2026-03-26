@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import XestiTools
+public import XestiTools
 
 /// A type-safe HTTP header field name.
 public struct HTTPHeaderName: StringRepresentable {

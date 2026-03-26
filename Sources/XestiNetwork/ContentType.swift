@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import XestiTools
+public import XestiTools
 
 /// A type-safe content type for matching against a Content-Type header field.
 public struct ContentType: StringRepresentable {

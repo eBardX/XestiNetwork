@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import XestiTools
+public import XestiTools
 
 /// An error that occurs while constructing an HTTP request or while
 /// validating an HTTP response.

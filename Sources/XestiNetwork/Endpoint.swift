@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
+public import Foundation
 
 /// An HTTP protocol URL endpoint.
 ///

@@ -1,5 +1,7 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+private import XestiTools
+
 extension HTTPMethod {
     /// The CONNECT request method.
     public static let connect = HTTPMethod("CONNECT")
