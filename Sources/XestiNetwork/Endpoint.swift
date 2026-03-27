@@ -17,8 +17,10 @@ public struct Endpoint {
 
     /// Creates a new `Endpoint` instance.
     ///
-    /// - Parameter baseURL:
-    /// - Parameter path:
+    /// - Parameter baseURL:    The base URL with which to construct an HTTP
+    ///                         request.
+    /// - Parameter path:       The URL path component with which to construct
+    ///                         an HTTP request.
     public init(baseURL: URL,
                 path: String) {
         self.baseURL = baseURL.absoluteURL
@@ -27,7 +29,7 @@ public struct Endpoint {
 
     /// Creates a new `Endpoint` instance.
     ///
-    /// - Parameter url:
+    /// - Parameter url:    The URL with which to construct an HTTP request.
     public init?(url: URL) {
         guard var components = URLComponents(url: url,
                                              resolvingAgainstBaseURL: true)
@@ -35,7 +37,9 @@ public struct Endpoint {
 
         self.path = components.path
 
+        components.fragment = nil
         components.path = ""
+        components.queryItems = nil
 
         guard let url = components.url
         else { return nil }
@@ -53,6 +57,10 @@ public struct Endpoint {
 
     /// The set of ``ContentType`` instances with which to validate an HTTP
     /// response.
+    ///
+    /// Content type validation is performed case-insensitively. If the HTTP
+    /// response does not include a `Content-Type` header, content type
+    /// validation is skipped.
     ///
     /// The default set contains ``ContentType/json``.
     public var acceptableContentTypes: Set<ContentType> = [.json]

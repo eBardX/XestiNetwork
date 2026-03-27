@@ -4,7 +4,7 @@ public import Foundation
 
 private import XestiTools
 
-/// Extensions allowing `URLSession` to seemlessly use ``Endpoint`` instances.
+/// Extensions allowing `URLSession` to seamlessly use ``Endpoint`` instances.
 extension URLSession {
 
     // MARK: Public Instance Methods
@@ -108,17 +108,18 @@ extension URLSession {
         guard let dataSource = endpoint.dataSource
         else { throw NetworkError.missingDataSource }
 
+        let request = try _makeRequest(for: endpoint)
         let response: URLResponse
         let data: Data
 
         switch dataSource {
         case let .bodyData(bodyData):
-            (data, response) = try await upload(for: _makeRequest(for: endpoint),
+            (data, response) = try await upload(for: request,
                                                 from: bodyData,
                                                 delegate: delegate)
 
         case let .fileURL(fileURL):
-            (data, response) = try await upload(for: _makeRequest(for: endpoint),
+            (data, response) = try await upload(for: request,
                                                 fromFile: fileURL,
                                                 delegate: delegate)
         }
@@ -142,9 +143,13 @@ extension URLSession {
             throw NetworkError.unacceptableStatusCode(statusCode, summary)
         }
 
-        if let contentType = response.mimeType,
-           !endpoint.acceptableContentTypes.contains(ContentType(contentType)) {
-            throw NetworkError.unacceptableContentType(contentType)
+        if let contentType = response.mimeType, !contentType.isEmpty {
+            let isAcceptable = endpoint.acceptableContentTypes.contains {
+                $0.stringValue.caseInsensitiveCompare(contentType) == .orderedSame
+            }
+
+            guard isAcceptable
+            else { throw NetworkError.unacceptableContentType(contentType) }
         }
 
         return response
