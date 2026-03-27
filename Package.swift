@@ -15,7 +15,9 @@ let package = Package(name: "XestiNetwork",
                                               .upToNextMajor(from: "7.0.0"))],
                       targets: [.target(name: "XestiNetwork",
                                         dependencies: [.product(name: "XestiTools",
-                                                                package: "XestiTools")])],
+                                                                package: "XestiTools")]),
+                                .testTarget(name: "XestiNetworkTests",
+                                            dependencies: [.target(name: "XestiNetwork")])],
                       swiftLanguageModes: [.v6])
 
 let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
