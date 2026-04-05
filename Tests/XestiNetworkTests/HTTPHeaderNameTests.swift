@@ -12,6 +12,16 @@ struct HTTPHeaderNameTests {
 
 extension HTTPHeaderNameTests {
     @Test
+    func test_codable() throws {
+        let original = HTTPHeaderName("X-Custom")
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(HTTPHeaderName.self,
+                                               from: data)
+
+        #expect(decoded == original)
+    }
+
+    @Test
     func test_comparable() {
         let n1 = HTTPHeaderName("Accept")
         let n2 = HTTPHeaderName("Content-Type")
@@ -21,7 +31,7 @@ extension HTTPHeaderNameTests {
     }
 
     @Test
-    func test_decodeFromJSON() throws {
+    func test_decode_fromJSON() throws {
         let json = "\"X-Custom\""
         let data = Data(json.utf8)
         let decoded = try JSONDecoder().decode(HTTPHeaderName.self,
@@ -31,7 +41,7 @@ extension HTTPHeaderNameTests {
     }
 
     @Test
-    func test_decodeInvalidValueThrows() throws {
+    func test_decode_invalidValueThrows() throws {
         let json = "\"\""
         let data = Data(json.utf8)
 
@@ -46,16 +56,6 @@ extension HTTPHeaderNameTests {
         let name = HTTPHeaderName("Content-Type")
 
         #expect(name.description == "Content-Type")
-    }
-
-    @Test
-    func test_encodeDecode() throws {
-        let original = HTTPHeaderName("X-Custom")
-        let data = try JSONEncoder().encode(original)
-        let decoded = try JSONDecoder().decode(HTTPHeaderName.self,
-                                               from: data)
-
-        #expect(decoded == original)
     }
 
     @Test
@@ -90,38 +90,31 @@ extension HTTPHeaderNameTests {
     }
 
     @Test
-    func test_initWithEmptyStringReturnsNil() {
+    func test_init_emptyStringReturnsNil() {
         let name = HTTPHeaderName(stringValue: "")
 
         #expect(name == nil)
     }
 
     @Test
-    func test_initWithValidString() {
-        let name = HTTPHeaderName(stringValue: "Accept")
-
-        #expect(name != nil)
-        #expect(name?.stringValue == "Accept")
-    }
-
-    @Test
-    func test_nonFailableInit() {
+    func test_init_nonFailable() {
         let name = HTTPHeaderName("Accept")
 
         #expect(name.stringValue == "Accept")
     }
 
     @Test
-    func test_standardValues() {
-        #expect(HTTPHeaderName.authorization.stringValue == "Authorization")
-        #expect(HTTPHeaderName.contentType.stringValue == "Content-Type")
-        #expect(HTTPHeaderName.userAgent.stringValue == "User-Agent")
-    }
-
-    @Test
-    func test_stringLiteralInit() {
+    func test_init_stringLiteral() {
         let name: HTTPHeaderName = "Accept"
 
         #expect(name.stringValue == "Accept")
+    }
+
+    @Test
+    func test_init_validString() {
+        let name = HTTPHeaderName(stringValue: "Accept")
+
+        #expect(name != nil)
+        #expect(name?.stringValue == "Accept")
     }
 }

@@ -12,21 +12,16 @@ struct EndpointTests {
 
 extension EndpointTests {
     @Test
-    func test_customMakeURL() throws {
+    func test_init_baseURLAndPath() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
-        let customURL = try #require(URL(string: "https://custom.example.com/override"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/v1/users")
 
-        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
-
-        endpoint.makeURL = { _ in customURL }
-
-        let url = try #require(endpoint.makeURL(endpoint))
-
-        #expect(url == customURL)
+        #expect(endpoint.baseURL == baseURL)
+        #expect(endpoint.path == "/v1/users")
     }
 
     @Test
-    func test_defaultPropertyValues() throws {
+    func test_init_defaultPropertyValues() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
         let endpoint = Endpoint(baseURL: baseURL, path: "/test")
 
@@ -41,16 +36,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_initWithBaseURLAndPath() throws {
-        let baseURL = try #require(URL(string: "https://api.example.com"))
-        let endpoint = Endpoint(baseURL: baseURL, path: "/v1/users")
-
-        #expect(endpoint.baseURL == baseURL)
-        #expect(endpoint.path == "/v1/users")
-    }
-
-    @Test
-    func test_initWithURL() throws {
+    func test_init_url() throws {
         let url = try #require(URL(string: "https://api.example.com/v1/users"))
         let endpoint = try #require(Endpoint(url: url))
 
@@ -62,28 +48,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeHeaderFieldsReturnsNilWithoutHeaders() throws {
-        let baseURL = try #require(URL(string: "https://api.example.com"))
-        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
-
-        #expect(endpoint.makeHeaderFields(endpoint) == nil)
-    }
-
-    @Test
-    func test_makeHeaderFieldsWithHeaders() throws {
-        let baseURL = try #require(URL(string: "https://api.example.com"))
-
-        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
-
-        endpoint.headers = [.authorization: "Bearer token123"]
-
-        let fields = try #require(endpoint.makeHeaderFields(endpoint))
-
-        #expect(fields["Authorization"] == "Bearer token123")
-    }
-
-    @Test
-    func test_makeHeaderFieldsWithMultipleHeaders() throws {
+    func test_makeHeaderFields_multipleHeaders() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -101,7 +66,28 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeQueryItemsReturnsNilWithoutParameters() throws {
+    func test_makeHeaderFields_noHeaders() throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        #expect(endpoint.makeHeaderFields(endpoint) == nil)
+    }
+
+    @Test
+    func test_makeHeaderFields_withHeaders() throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.headers = [.authorization: "Bearer token123"]
+
+        let fields = try #require(endpoint.makeHeaderFields(endpoint))
+
+        #expect(fields["Authorization"] == "Bearer token123")
+    }
+
+    @Test
+    func test_makeQueryItems_noParameters() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
         let endpoint = Endpoint(baseURL: baseURL, path: "/test")
 
@@ -109,7 +95,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeQueryItemsWithParameters() throws {
+    func test_makeQueryItems_withParameters() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -134,7 +120,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestCombinesAllProperties() throws {
+    func test_makeRequest_combinesAllProperties() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/v1/items")
@@ -161,7 +147,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestReturnsNilWhenMakeURLFails() throws {
+    func test_makeRequest_nilWhenMakeURLFails() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -172,7 +158,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestSetsCachePolicy() throws {
+    func test_makeRequest_setCachePolicy() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -185,7 +171,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestSetsHTTPMethod() throws {
+    func test_makeRequest_setHTTPMethod() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/v1/users")
@@ -198,7 +184,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestSetsHeaderFields() throws {
+    func test_makeRequest_setHeaderFields() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -211,7 +197,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeRequestSetsTimeoutInterval() throws {
+    func test_makeRequest_setTimeoutInterval() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -233,7 +219,21 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeURLWithMultipleParameters() throws {
+    func test_makeURL_custom() throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let customURL = try #require(URL(string: "https://custom.example.com/override"))
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.makeURL = { _ in customURL }
+
+        let url = try #require(endpoint.makeURL(endpoint))
+
+        #expect(url == customURL)
+    }
+
+    @Test
+    func test_makeURL_multipleParameters() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/search")
@@ -255,7 +255,7 @@ extension EndpointTests {
     }
 
     @Test
-    func test_makeURLWithParameters() throws {
+    func test_makeURL_withParameters() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
         var endpoint = Endpoint(baseURL: baseURL, path: "/search")

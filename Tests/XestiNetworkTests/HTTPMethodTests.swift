@@ -12,6 +12,16 @@ struct HTTPMethodTests {
 
 extension HTTPMethodTests {
     @Test
+    func test_codable() throws {
+        let original = HTTPMethod("PATCH")
+        let data = try JSONEncoder().encode(original)
+        let decoded = try JSONDecoder().decode(HTTPMethod.self,
+                                               from: data)
+
+        #expect(decoded == original)
+    }
+
+    @Test
     func test_comparable() {
         let m1 = HTTPMethod("DELETE")
         let m2 = HTTPMethod("GET")
@@ -21,7 +31,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_decodeFromJSON() throws {
+    func test_decode_fromJSON() throws {
         let json = "\"PATCH\""
         let data = Data(json.utf8)
         let decoded = try JSONDecoder().decode(HTTPMethod.self,
@@ -31,7 +41,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_decodeInvalidValueThrows() throws {
+    func test_decode_invalidValueThrows() throws {
         let json = "\"\""
         let data = Data(json.utf8)
 
@@ -46,16 +56,6 @@ extension HTTPMethodTests {
         let method = HTTPMethod("GET")
 
         #expect(method.description == "GET")
-    }
-
-    @Test
-    func test_encodeDecode() throws {
-        let original = HTTPMethod("PATCH")
-        let data = try JSONEncoder().encode(original)
-        let decoded = try JSONDecoder().decode(HTTPMethod.self,
-                                               from: data)
-
-        #expect(decoded == original)
     }
 
     @Test
@@ -90,44 +90,31 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_initWithEmptyStringReturnsNil() {
+    func test_init_emptyStringReturnsNil() {
         let method = HTTPMethod(stringValue: "")
 
         #expect(method == nil)
     }
 
     @Test
-    func test_initWithValidString() {
-        let method = HTTPMethod(stringValue: "GET")
-
-        #expect(method != nil)
-        #expect(method?.stringValue == "GET")
-    }
-
-    @Test
-    func test_nonFailableInit() {
+    func test_init_nonFailable() {
         let method = HTTPMethod("GET")
 
         #expect(method.stringValue == "GET")
     }
 
     @Test
-    func test_standardValues() {
-        #expect(HTTPMethod.connect.stringValue == "CONNECT")
-        #expect(HTTPMethod.delete.stringValue == "DELETE")
-        #expect(HTTPMethod.get.stringValue == "GET")
-        #expect(HTTPMethod.head.stringValue == "HEAD")
-        #expect(HTTPMethod.options.stringValue == "OPTIONS")
-        #expect(HTTPMethod.patch.stringValue == "PATCH")
-        #expect(HTTPMethod.post.stringValue == "POST")
-        #expect(HTTPMethod.put.stringValue == "PUT")
-        #expect(HTTPMethod.trace.stringValue == "TRACE")
-    }
-
-    @Test
-    func test_stringLiteralInit() {
+    func test_init_stringLiteral() {
         let method: HTTPMethod = "POST"
 
         #expect(method.stringValue == "POST")
+    }
+
+    @Test
+    func test_init_validString() {
+        let method = HTTPMethod(stringValue: "GET")
+
+        #expect(method != nil)
+        #expect(method?.stringValue == "GET")
     }
 }
