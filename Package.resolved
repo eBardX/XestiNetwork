@@ -1,5 +1,5 @@
 {
-  "originHash" : "b91459e6bbf91c775d56142d18c2d415a6e0a773f03dd00cb040a6487ac20e2e",
+  "originHash" : "22cb8bce41b861b1d1c1d6266f5661b7597d29479a9b38efae5d70d62fdb56ef",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eBardX/XestiTools.git",
       "state" : {
-        "revision" : "1020d44acd708bef2f63a2e0455411febd1e2171",
-        "version" : "7.1.0"
+        "revision" : "615afab516ad9512da6e39cc39428e180c428c5a",
+        "version" : "7.2.1"
       }
     },
     {

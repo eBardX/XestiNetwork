@@ -32,6 +32,9 @@ extension URLSession {
     /// - Returns:  An asynchronously-delivered tuple that contains a
     ///             `URLSession.AsyncBytes` sequence to iterate over, and an
     ///             `HTTPURLResponse`.
+    ///
+    /// - Throws:   A ``NetworkError`` if the URL request cannot be constructed
+    ///             or if the HTTP response is invalid or unacceptable.
     public func bytes(for endpoint: Endpoint,
                       delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
         let (bytes, response) = try await bytes(for: _makeRequest(for: endpoint),
@@ -58,6 +61,9 @@ extension URLSession {
     ///
     /// - Returns:  An asynchronously-delivered tuple that contains the URL
     ///             contents as a `Data` instance, and an `HTTPURLResponse`.
+    ///
+    /// - Throws:   A ``NetworkError`` if the URL request cannot be constructed
+    ///             or if the HTTP response is invalid or unacceptable.
     public func data(for endpoint: Endpoint,
                      delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
         let (data, response) = try await data(for: _makeRequest(for: endpoint),
@@ -80,6 +86,9 @@ extension URLSession {
     ///
     /// - Returns:  An asynchronously-delivered tuple that contains the location
     ///             of the downloaded file as a URL, and an `HTTPURLResponse`.
+    ///
+    /// - Throws:   A ``NetworkError`` if the URL request cannot be constructed
+    ///             or if the HTTP response is invalid or unacceptable.
     public func download(for endpoint: Endpoint,
                          delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (URL, HTTPURLResponse) {
         let (location, response) = try await download(for: _makeRequest(for: endpoint),
@@ -103,6 +112,10 @@ extension URLSession {
     /// - Returns:  An asynchronously-delivered tuple that contains any data
     ///             returned by the server as a `Data` instance, and an
     ///             `HTTPURLResponse`.
+    ///
+    /// - Throws:   A ``NetworkError`` if the endpoint has no data source, if
+    ///             the URL request cannot be constructed, or if the HTTP
+    ///             response is invalid or unacceptable.
     public func upload(for endpoint: Endpoint,
                        delegate: (any URLSessionTaskDelegate)? = nil) async throws -> (Data, HTTPURLResponse) {
         guard let dataSource = endpoint.dataSource
