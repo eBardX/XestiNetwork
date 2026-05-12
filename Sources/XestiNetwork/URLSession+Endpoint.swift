@@ -40,7 +40,7 @@ extension URLSession {
         let (bytes, response) = try await bytes(for: _makeRequest(for: endpoint),
                                                 delegate: delegate)
 
-        return (bytes, try _checkValidResponse(response,
+        return try (bytes, _checkValidResponse(response,
                                                for: endpoint))
     }
 
@@ -69,7 +69,7 @@ extension URLSession {
         let (data, response) = try await data(for: _makeRequest(for: endpoint),
                                               delegate: delegate)
 
-        return (data, try _checkValidResponse(response,
+        return try (data, _checkValidResponse(response,
                                               for: endpoint))
     }
 
@@ -94,7 +94,7 @@ extension URLSession {
         let (location, response) = try await download(for: _makeRequest(for: endpoint),
                                                       delegate: delegate)
 
-        return (location, try _checkValidResponse(response,
+        return try (location, _checkValidResponse(response,
                                                   for: endpoint))
     }
 
@@ -137,7 +137,7 @@ extension URLSession {
                                                 delegate: delegate)
         }
 
-        return (data, try _checkValidResponse(response,
+        return try (data, _checkValidResponse(response,
                                               for: endpoint))
     }
 

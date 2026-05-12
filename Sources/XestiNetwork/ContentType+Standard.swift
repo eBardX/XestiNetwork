@@ -6,7 +6,7 @@ extension ContentType {
     /// Indicates arbitrary binary data.
     public static let binary = ContentType("application/octet-stream")
 
-    /// Indicates JavaScript Object Notation (JSON) data. 
+    /// Indicates JavaScript Object Notation (JSON) data.
     public static let json = ContentType("application/json")
 
     /// Indicates text with no markup and an unspecified encoding.
