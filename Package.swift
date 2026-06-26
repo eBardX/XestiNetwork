@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3
 
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
@@ -18,7 +18,7 @@ let package = Package(name: "XestiNetwork",
                       products: [.library(name: "XestiNetwork",
                                           targets: ["XestiNetwork"])],
                       dependencies: [.package(url: "https://github.com/eBardX/XestiTools.git",
-                                              .upToNextMajor(from: "7.3.0"))],
+                                              .upToNextMajor(from: "9.0.0"))],
                       targets: [.target(name: "XestiNetwork",
                                         dependencies: [.product(name: "XestiTools",
                                                                 package: "XestiTools")],
