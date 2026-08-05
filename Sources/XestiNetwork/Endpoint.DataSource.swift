@@ -6,7 +6,7 @@ extension Endpoint {
 
     // MARK: Public Nested Types
 
-    /// Encapsulates the source of data for an HTTP upload request.
+    /// The source of data for an HTTP upload request.
     public enum DataSource {
         /// The body data to upload.
         case bodyData(Data)

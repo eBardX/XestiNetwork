@@ -12,7 +12,7 @@ struct ContentTypeTests {
 
 extension ContentTypeTests {
     @Test
-    func test_codable() throws {
+    func codable() throws {
         let original = ContentType("application/json")
         let data = try JSONEncoder().encode(original)
         let decoded = try JSONDecoder().decode(ContentType.self,
@@ -22,7 +22,7 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_comparable() {
+    func comparable() {
         let ct1 = ContentType("application/json")
         let ct2 = ContentType("text/plain")
 
@@ -31,7 +31,7 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_decode_fromJSON() throws {
+    func decode_fromJSON() throws {
         let json = "\"application/xml\""
         let data = Data(json.utf8)
         let decoded = try JSONDecoder().decode(ContentType.self,
@@ -41,7 +41,7 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_decode_invalidValueThrows() throws {
+    func decode_invalidValueThrows() throws {
         let json = "\"\""
         let data = Data(json.utf8)
 
@@ -52,14 +52,14 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_description() {
+    func description() {
         let contentType = ContentType("application/json")
 
         #expect(contentType.description == "application/json")
     }
 
     @Test
-    func test_equality() {
+    func equality() {
         let ct1 = ContentType("application/json")
         let ct2 = ContentType("application/json")
 
@@ -67,7 +67,7 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_hashable() {
+    func hashable() {
         let ct1 = ContentType("application/json")
         let ct2 = ContentType("application/json")
         let ct3 = ContentType("text/plain")
@@ -82,7 +82,7 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_inequality() {
+    func inequality() {
         let ct1 = ContentType("application/json")
         let ct2 = ContentType("text/plain")
 
@@ -90,28 +90,28 @@ extension ContentTypeTests {
     }
 
     @Test
-    func test_init_emptyStringReturnsNil() {
+    func init_emptyStringReturnsNil() {
         let contentType = ContentType(stringValue: "")
 
         #expect(contentType == nil)
     }
 
     @Test
-    func test_init_nonFailable() {
+    func init_nonFailable() {
         let contentType = ContentType("text/html")
 
         #expect(contentType.stringValue == "text/html")
     }
 
     @Test
-    func test_init_stringLiteral() {
+    func init_stringLiteral() {
         let contentType: ContentType = "text/html"
 
         #expect(contentType.stringValue == "text/html")
     }
 
     @Test
-    func test_init_validString() {
+    func init_validString() {
         let contentType = ContentType(stringValue: "text/html")
 
         #expect(contentType != nil)

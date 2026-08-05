@@ -29,6 +29,9 @@ public struct Endpoint {
 
     /// Creates a new `Endpoint` instance.
     ///
+    /// If the provided URL cannot be parsed into components, this initializer
+    /// returns `nil`.
+    ///
     /// - Parameter url:    The URL with which to construct an HTTP request.
     public init?(url: URL) {
         guard var components = URLComponents(url: url,

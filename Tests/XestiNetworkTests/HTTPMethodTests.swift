@@ -12,7 +12,7 @@ struct HTTPMethodTests {
 
 extension HTTPMethodTests {
     @Test
-    func test_codable() throws {
+    func codable() throws {
         let original = HTTPMethod("PATCH")
         let data = try JSONEncoder().encode(original)
         let decoded = try JSONDecoder().decode(HTTPMethod.self,
@@ -22,7 +22,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_comparable() {
+    func comparable() {
         let m1 = HTTPMethod("DELETE")
         let m2 = HTTPMethod("GET")
 
@@ -31,7 +31,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_decode_fromJSON() throws {
+    func decode_fromJSON() throws {
         let json = "\"PATCH\""
         let data = Data(json.utf8)
         let decoded = try JSONDecoder().decode(HTTPMethod.self,
@@ -41,7 +41,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_decode_invalidValueThrows() throws {
+    func decode_invalidValueThrows() throws {
         let json = "\"\""
         let data = Data(json.utf8)
 
@@ -52,14 +52,14 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_description() {
+    func description() {
         let method = HTTPMethod("GET")
 
         #expect(method.description == "GET")
     }
 
     @Test
-    func test_equality() {
+    func equality() {
         let m1 = HTTPMethod("GET")
         let m2 = HTTPMethod("GET")
 
@@ -67,7 +67,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_hashable() {
+    func hashable() {
         let m1 = HTTPMethod("GET")
         let m2 = HTTPMethod("GET")
         let m3 = HTTPMethod("POST")
@@ -82,7 +82,7 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_inequality() {
+    func inequality() {
         let m1 = HTTPMethod("GET")
         let m2 = HTTPMethod("POST")
 
@@ -90,28 +90,28 @@ extension HTTPMethodTests {
     }
 
     @Test
-    func test_init_emptyStringReturnsNil() {
+    func init_emptyStringReturnsNil() {
         let method = HTTPMethod(stringValue: "")
 
         #expect(method == nil)
     }
 
     @Test
-    func test_init_nonFailable() {
+    func init_nonFailable() {
         let method = HTTPMethod("GET")
 
         #expect(method.stringValue == "GET")
     }
 
     @Test
-    func test_init_stringLiteral() {
+    func init_stringLiteral() {
         let method: HTTPMethod = "POST"
 
         #expect(method.stringValue == "POST")
     }
 
     @Test
-    func test_init_validString() {
+    func init_validString() {
         let method = HTTPMethod(stringValue: "GET")
 
         #expect(method != nil)

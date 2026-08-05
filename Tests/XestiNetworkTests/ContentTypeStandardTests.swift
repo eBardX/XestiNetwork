@@ -10,7 +10,7 @@ struct ContentTypeStandardTests {
 
 extension ContentTypeStandardTests {
     @Test
-    func test_standardValues() {
+    func standardValues() {
         #expect(ContentType.binary.stringValue == "application/octet-stream")
         #expect(ContentType.json.stringValue == "application/json")
         #expect(ContentType.plainText.stringValue == "text/plain")

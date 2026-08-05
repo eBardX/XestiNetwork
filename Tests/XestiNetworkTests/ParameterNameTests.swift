@@ -12,7 +12,7 @@ struct ParameterNameTests {
 
 extension ParameterNameTests {
     @Test
-    func test_codable() throws {
+    func codable() throws {
         let original = ParameterName("query")
         let data = try JSONEncoder().encode(original)
         let decoded = try JSONDecoder().decode(ParameterName.self,
@@ -22,7 +22,7 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_comparable() {
+    func comparable() {
         let n1 = ParameterName("alpha")
         let n2 = ParameterName("beta")
 
@@ -31,7 +31,7 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_decode_fromJSON() throws {
+    func decode_fromJSON() throws {
         let json = "\"search\""
         let data = Data(json.utf8)
         let decoded = try JSONDecoder().decode(ParameterName.self,
@@ -41,7 +41,7 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_decode_invalidValueThrows() throws {
+    func decode_invalidValueThrows() throws {
         let json = "\"\""
         let data = Data(json.utf8)
 
@@ -52,14 +52,14 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_description() {
+    func description() {
         let name = ParameterName("query")
 
         #expect(name.description == "query")
     }
 
     @Test
-    func test_equality() {
+    func equality() {
         let n1 = ParameterName("page")
         let n2 = ParameterName("page")
 
@@ -67,7 +67,7 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_hashable() {
+    func hashable() {
         let n1 = ParameterName("page")
         let n2 = ParameterName("page")
         let n3 = ParameterName("limit")
@@ -82,7 +82,7 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_inequality() {
+    func inequality() {
         let n1 = ParameterName("page")
         let n2 = ParameterName("limit")
 
@@ -90,28 +90,28 @@ extension ParameterNameTests {
     }
 
     @Test
-    func test_init_emptyStringReturnsNil() {
+    func init_emptyStringReturnsNil() {
         let name = ParameterName(stringValue: "")
 
         #expect(name == nil)
     }
 
     @Test
-    func test_init_nonFailable() {
+    func init_nonFailable() {
         let name = ParameterName("query")
 
         #expect(name.stringValue == "query")
     }
 
     @Test
-    func test_init_stringLiteral() {
+    func init_stringLiteral() {
         let name: ParameterName = "query"
 
         #expect(name.stringValue == "query")
     }
 
     @Test
-    func test_init_validString() {
+    func init_validString() {
         let name = ParameterName(stringValue: "query")
 
         #expect(name != nil)

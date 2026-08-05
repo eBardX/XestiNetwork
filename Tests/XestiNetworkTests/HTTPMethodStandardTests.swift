@@ -10,7 +10,7 @@ struct HTTPMethodStandardTests {
 
 extension HTTPMethodStandardTests {
     @Test
-    func test_standardValues() {
+    func standardValues() {
         #expect(HTTPMethod.connect.stringValue == "CONNECT")
         #expect(HTTPMethod.delete.stringValue == "DELETE")
         #expect(HTTPMethod.get.stringValue == "GET")

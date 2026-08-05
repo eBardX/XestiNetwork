@@ -10,7 +10,7 @@ struct HTTPHeaderNameStandardTests {
 
 extension HTTPHeaderNameStandardTests {
     @Test
-    func test_standardValues() {
+    func standardValues() {
         #expect(HTTPHeaderName.authorization.stringValue == "Authorization")
         #expect(HTTPHeaderName.contentType.stringValue == "Content-Type")
         #expect(HTTPHeaderName.userAgent.stringValue == "User-Agent")
