@@ -26,16 +26,16 @@ internal final class MockURLProtocol: URLProtocol, @unchecked Sendable {
     }
 
     internal static func setStub(_ stub: Stub?) {
-        _lock.lock()
-        defer { _lock.unlock() }
+        lock.lock()
+        defer { lock.unlock() }
 
-        _stub = stub
+        Self.stub = stub
     }
 
     // MARK: Private Type Properties
 
-    private nonisolated(unsafe) static var _stub: Stub?
-    private static let _lock = NSLock()
+    private static let lock = NSLock()
+    private nonisolated(unsafe) static var stub: Stub?
 
     // MARK: Overridden Internal Type Methods
 
@@ -50,9 +50,9 @@ internal final class MockURLProtocol: URLProtocol, @unchecked Sendable {
     // MARK: Overridden Internal Instance Methods
 
     override internal func startLoading() {
-        Self._lock.lock()
-        let stub = Self._stub
-        Self._lock.unlock()
+        Self.lock.lock()
+        let stub = Self.stub
+        Self.lock.unlock()
 
         if let error = stub?.error {
             client?.urlProtocol(self,
