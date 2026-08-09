@@ -12,6 +12,40 @@ struct URLSessionEndpointTests {
 
 extension URLSessionEndpointTests {
     @Test
+    func bytes_invalidHTTPURLResponse() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
+        let session = MockURLProtocol.makeSession()
+        let nonHTTPResponse = URLResponse(url: baseURL,
+                                          mimeType: nil,
+                                          expectedContentLength: 0,
+                                          textEncodingName: nil)
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: nonHTTPResponse))
+
+        defer { MockURLProtocol.setStub(nil) }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.bytes(for: endpoint)
+        }
+    }
+
+    @Test
+    func bytes_invalidURLRequest() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let session = MockURLProtocol.makeSession()
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.makeURL = { _ in nil }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.bytes(for: endpoint)
+        }
+    }
+
+    @Test
     func bytes_success() async throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
         let endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -32,6 +66,23 @@ extension URLSessionEndpointTests {
 
         #expect(Data(collected) == expectedData)
         #expect(response.statusCode == 200)
+    }
+
+    @Test
+    func bytes_unacceptableContentType() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
+        let session = MockURLProtocol.makeSession()
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: makeHTTPURLResponse(url: baseURL,
+                                                                                   contentType: "text/html")))
+
+        defer { MockURLProtocol.setStub(nil) }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.bytes(for: endpoint)
+        }
     }
 
     @Test
@@ -138,6 +189,40 @@ extension URLSessionEndpointTests {
     }
 
     @Test
+    func download_invalidHTTPURLResponse() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
+        let session = MockURLProtocol.makeSession()
+        let nonHTTPResponse = URLResponse(url: baseURL,
+                                          mimeType: nil,
+                                          expectedContentLength: 0,
+                                          textEncodingName: nil)
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: nonHTTPResponse))
+
+        defer { MockURLProtocol.setStub(nil) }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.download(for: endpoint)
+        }
+    }
+
+    @Test
+    func download_invalidURLRequest() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let session = MockURLProtocol.makeSession()
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.makeURL = { _ in nil }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.download(for: endpoint)
+        }
+    }
+
+    @Test
     func download_success() async throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
         let endpoint = Endpoint(baseURL: baseURL, path: "/test")
@@ -157,6 +242,23 @@ extension URLSessionEndpointTests {
 
         #expect(downloadedData == expectedData)
         #expect(response.statusCode == 200)
+    }
+
+    @Test
+    func download_unacceptableContentType() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let endpoint = Endpoint(baseURL: baseURL, path: "/test")
+        let session = MockURLProtocol.makeSession()
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: makeHTTPURLResponse(url: baseURL,
+                                                                                   contentType: "text/html")))
+
+        defer { MockURLProtocol.setStub(nil) }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.download(for: endpoint)
+        }
     }
 
     @Test
@@ -225,10 +327,68 @@ extension URLSessionEndpointTests {
     }
 
     @Test
+    func upload_invalidHTTPURLResponse() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let session = MockURLProtocol.makeSession()
+        let nonHTTPResponse = URLResponse(url: baseURL,
+                                          mimeType: nil,
+                                          expectedContentLength: 0,
+                                          textEncodingName: nil)
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.dataSource = .bodyData(Data("payload".utf8))
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: nonHTTPResponse))
+
+        defer { MockURLProtocol.setStub(nil) }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.upload(for: endpoint)
+        }
+    }
+
+    @Test
+    func upload_invalidURLRequest() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let session = MockURLProtocol.makeSession()
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.dataSource = .bodyData(Data("payload".utf8))
+        endpoint.makeURL = { _ in nil }
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.upload(for: endpoint)
+        }
+    }
+
+    @Test
     func upload_missingDataSource() async throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
         let endpoint = Endpoint(baseURL: baseURL, path: "/test")
         let session = MockURLProtocol.makeSession()
+
+        await #expect(throws: NetworkError.self) {
+            _ = try await session.upload(for: endpoint)
+        }
+    }
+
+    @Test
+    func upload_unacceptableContentType() async throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+        let session = MockURLProtocol.makeSession()
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/test")
+
+        endpoint.dataSource = .bodyData(Data("payload".utf8))
+
+        MockURLProtocol.setStub(MockURLProtocol.Stub(data: Data(),
+                                                     response: makeHTTPURLResponse(url: baseURL,
+                                                                                   contentType: "text/html")))
+
+        defer { MockURLProtocol.setStub(nil) }
 
         await #expect(throws: NetworkError.self) {
             _ = try await session.upload(for: endpoint)

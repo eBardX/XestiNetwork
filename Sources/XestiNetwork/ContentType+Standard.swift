@@ -3,12 +3,13 @@
 private import XestiTools
 
 extension ContentType {
-    /// Indicates arbitrary binary data.
+    /// A content type indicating arbitrary binary data.
     public static let binary = ContentType("application/octet-stream")
 
-    /// Indicates JavaScript Object Notation (JSON) data.
+    /// A content type indicating JavaScript Object Notation (JSON) data.
     public static let json = ContentType("application/json")
 
-    /// Indicates text with no markup and an unspecified encoding.
+    /// A content type indicating text with no markup and an unspecified
+    /// encoding.
     public static let plainText = ContentType("text/plain")
 }

@@ -9,6 +9,6 @@ extension HTTPHeaderName {
     /// The content type of the body of the HTTP request.
     public static let contentType = HTTPHeaderName("Content-Type")
 
-    /// Identifies the user agent making the HTTP request.
+    /// The user agent making the HTTP request.
     public static let userAgent = HTTPHeaderName("User-Agent")
 }
