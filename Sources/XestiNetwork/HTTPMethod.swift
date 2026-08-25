@@ -3,7 +3,7 @@
 public import XestiTools
 
 /// A type-safe HTTP request method.
-public struct HTTPMethod: StringRepresentable {
+public struct HTTPMethod {
 
     // MARK: Public Initializers
 
@@ -28,4 +28,9 @@ public struct HTTPMethod: StringRepresentable {
     /// A new HTTP request method instance initialized with `stringValue` will
     /// be equivalent to this instance.
     public let stringValue: String
+}
+
+// MARK: - StringRepresentable
+
+extension HTTPMethod: StringRepresentable {
 }

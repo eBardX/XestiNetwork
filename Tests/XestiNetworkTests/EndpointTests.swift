@@ -171,19 +171,6 @@ extension EndpointTests {
     }
 
     @Test
-    func makeRequest_setHTTPMethod() throws {
-        let baseURL = try #require(URL(string: "https://api.example.com"))
-
-        var endpoint = Endpoint(baseURL: baseURL, path: "/v1/users")
-
-        endpoint.method = .post
-
-        let request = try #require(endpoint.makeRequest(endpoint))
-
-        #expect(request.httpMethod == "POST")
-    }
-
-    @Test
     func makeRequest_setHeaderFields() throws {
         let baseURL = try #require(URL(string: "https://api.example.com"))
 
@@ -194,6 +181,19 @@ extension EndpointTests {
         let request = try #require(endpoint.makeRequest(endpoint))
 
         #expect(request.allHTTPHeaderFields?["Content-Type"] == "application/json")
+    }
+
+    @Test
+    func makeRequest_setHTTPMethod() throws {
+        let baseURL = try #require(URL(string: "https://api.example.com"))
+
+        var endpoint = Endpoint(baseURL: baseURL, path: "/v1/users")
+
+        endpoint.method = .post
+
+        let request = try #require(endpoint.makeRequest(endpoint))
+
+        #expect(request.httpMethod == "POST")
     }
 
     @Test

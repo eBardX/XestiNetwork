@@ -106,7 +106,7 @@ public struct Endpoint {
     /// A closure that accepts an ``Endpoint`` as its argument and returns an
     /// array of new `URLQueryItem` instances.
     ///
-    /// By default, if the ``parameters`` dictionary is non-`nil`. it is
+    /// By default, if the ``parameters`` dictionary is non-`nil`, it is
     /// converted to an array of query items for the HTTP request.
     ///
     /// The closure returns `nil` if it is unable to construct the query items,

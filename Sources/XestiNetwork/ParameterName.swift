@@ -3,7 +3,7 @@
 public import XestiTools
 
 /// A type-safe parameter name.
-public struct ParameterName: StringRepresentable {
+public struct ParameterName {
 
     // MARK: Public Initializers
 
@@ -27,4 +27,9 @@ public struct ParameterName: StringRepresentable {
     /// A new parameter name instance initialized with `stringValue` will be
     /// equivalent to this instance.
     public let stringValue: String
+}
+
+// MARK: - StringRepresentable
+
+extension ParameterName: StringRepresentable {
 }

@@ -3,7 +3,7 @@
 public import XestiTools
 
 /// A type-safe HTTP header field name.
-public struct HTTPHeaderName: StringRepresentable {
+public struct HTTPHeaderName {
 
     // MARK: Public Initializers
 
@@ -28,4 +28,9 @@ public struct HTTPHeaderName: StringRepresentable {
     /// A new HTTP header field name instance initialized with `stringValue`
     /// will be equivalent to this instance.
     public let stringValue: String
+}
+
+// MARK: - StringRepresentable
+
+extension HTTPHeaderName: StringRepresentable {
 }

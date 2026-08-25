@@ -144,7 +144,7 @@ extension URLSession {
     // MARK: Private Instance Methods
 
     private func _checkValidResponse(_ response: URLResponse,
-                                     for endpoint: Endpoint) throws -> HTTPURLResponse {
+                                     for endpoint: Endpoint) throws(NetworkError) -> HTTPURLResponse {
         guard let response = response as? HTTPURLResponse
         else { throw NetworkError.invalidHTTPURLResponse }
 
@@ -168,7 +168,7 @@ extension URLSession {
         return response
     }
 
-    private func _makeRequest(for endpoint: Endpoint) throws -> URLRequest {
+    private func _makeRequest(for endpoint: Endpoint) throws(NetworkError) -> URLRequest {
         guard let request = endpoint.makeRequest(endpoint)
         else { throw NetworkError.invalidURLRequest }
 

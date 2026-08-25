@@ -3,7 +3,7 @@
 public import XestiTools
 
 /// A type-safe content type for matching against a Content-Type header field.
-public struct ContentType: StringRepresentable {
+public struct ContentType {
 
     // MARK: Public Initializers
 
@@ -27,4 +27,9 @@ public struct ContentType: StringRepresentable {
     /// A new content type instance initialized with `stringValue` will be
     /// equivalent to this instance.
     public let stringValue: String
+}
+
+// MARK: - StringRepresentable
+
+extension ContentType: StringRepresentable {
 }
